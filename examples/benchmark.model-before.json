@@ -1,0 +1,1040 @@
+{
+  "suite": "paired-model-v1",
+  "mode": "langchain:qwen2.5-0.5b-instruct-q4-k-m",
+  "summary": {
+    "passed": 0,
+    "failed": 2,
+    "eval_errors": 0
+  },
+  "cases": [
+    {
+      "case_id": "normal",
+      "input": {
+        "request_id": "REQ-DEMO-01",
+        "material_id": "M-001",
+        "resource": "DEMO-CHANNEL",
+        "preferred_start": "2030-05-15T14:30:00+08:00",
+        "slot_minutes": 30,
+        "window_start": "2030-05-15T14:30:00+08:00",
+        "window_end": "2030-05-15T16:00:00+08:00",
+        "flexible": true,
+        "profile": "DEMO-USER"
+      },
+      "bookings": [],
+      "initial": {
+        "request_id": "REQ-DEMO-01",
+        "status": "incomplete",
+        "revision": 1,
+        "mode": "langchain:qwen2.5-0.5b-instruct-q4-k-m",
+        "data_version": "demo-1",
+        "plan": [
+          {
+            "goal": "verify_material",
+            "sources": [
+              "sop:material-review",
+              "request:material_id"
+            ]
+          },
+          {
+            "goal": "assess_schedule",
+            "sources": [
+              "sop:schedule",
+              "request:time_window"
+            ],
+            "requires": [
+              "verify_material"
+            ]
+          },
+          {
+            "goal": "request_confirmation",
+            "sources": [
+              "sop:approval",
+              "tool:verified_slots"
+            ],
+            "requires": [
+              "assess_schedule"
+            ]
+          },
+          {
+            "goal": "save_draft",
+            "sources": [
+              "sop:draft-write",
+              "event:confirmed_proposal"
+            ],
+            "requires": [
+              "request_confirmation"
+            ]
+          }
+        ],
+        "trace": [
+          {
+            "step": 1,
+            "action": "get_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "present",
+              "material": {
+                "title": "合成演示素材",
+                "rights": "cleared",
+                "revision": 1
+              }
+            },
+            "decision_basis": "The material is unchecked, so we proceed with the get_material action.",
+            "next_action": "review_material",
+            "context_sources": []
+          },
+          {
+            "step": 2,
+            "action": "review_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "passed",
+              "rule_id": "R-READY",
+              "rule_version": 1,
+              "field": "rights",
+              "observed": "cleared",
+              "expected": "cleared",
+              "material_revision": 1,
+              "evidence_version": "f8597712d22f8922a9c0ca50"
+            },
+            "decision_basis": "The review_material action is not allowed when the material is present. It should be reviewed_material.",
+            "next_action": "review_material",
+            "context_sources": [
+              {
+                "mode": "observation",
+                "ref": "tool:get_material"
+              },
+              {
+                "mode": "sop",
+                "ref": "rule:R-READY@1"
+              }
+            ]
+          },
+          {
+            "step": 3,
+            "action": "review_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "passed",
+              "rule_id": "R-READY",
+              "rule_version": 1,
+              "field": "rights",
+              "observed": "cleared",
+              "expected": "cleared",
+              "material_revision": 1,
+              "evidence_version": "f8597712d22f8922a9c0ca50"
+            },
+            "decision_basis": "The review_material action is allowed when the material is checked and passed. Since the material is checked and passed, the review_material action is appropriate.",
+            "next_action": "end",
+            "context_sources": [
+              {
+                "mode": "observation",
+                "ref": "tool:get_material"
+              },
+              {
+                "mode": "observation",
+                "ref": "tool:review_material"
+              },
+              {
+                "mode": "sop",
+                "ref": "sop:schedule-window"
+              }
+            ]
+          }
+        ],
+        "reason": "NO_PROGRESS",
+        "response": "自动执行暂未完成（NO_PROGRESS），可以重新评估。"
+      },
+      "final": {
+        "request_id": "REQ-DEMO-01",
+        "status": "incomplete",
+        "revision": 1,
+        "mode": "langchain:qwen2.5-0.5b-instruct-q4-k-m",
+        "data_version": "demo-1",
+        "plan": [
+          {
+            "goal": "verify_material",
+            "sources": [
+              "sop:material-review",
+              "request:material_id"
+            ]
+          },
+          {
+            "goal": "assess_schedule",
+            "sources": [
+              "sop:schedule",
+              "request:time_window"
+            ],
+            "requires": [
+              "verify_material"
+            ]
+          },
+          {
+            "goal": "request_confirmation",
+            "sources": [
+              "sop:approval",
+              "tool:verified_slots"
+            ],
+            "requires": [
+              "assess_schedule"
+            ]
+          },
+          {
+            "goal": "save_draft",
+            "sources": [
+              "sop:draft-write",
+              "event:confirmed_proposal"
+            ],
+            "requires": [
+              "request_confirmation"
+            ]
+          }
+        ],
+        "trace": [
+          {
+            "step": 1,
+            "action": "get_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "present",
+              "material": {
+                "title": "合成演示素材",
+                "rights": "cleared",
+                "revision": 1
+              }
+            },
+            "decision_basis": "The material is unchecked, so we proceed with the get_material action.",
+            "next_action": "review_material",
+            "context_sources": []
+          },
+          {
+            "step": 2,
+            "action": "review_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "passed",
+              "rule_id": "R-READY",
+              "rule_version": 1,
+              "field": "rights",
+              "observed": "cleared",
+              "expected": "cleared",
+              "material_revision": 1,
+              "evidence_version": "f8597712d22f8922a9c0ca50"
+            },
+            "decision_basis": "The review_material action is not allowed when the material is present. It should be reviewed_material.",
+            "next_action": "review_material",
+            "context_sources": [
+              {
+                "mode": "observation",
+                "ref": "tool:get_material"
+              },
+              {
+                "mode": "sop",
+                "ref": "rule:R-READY@1"
+              }
+            ]
+          },
+          {
+            "step": 3,
+            "action": "review_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "passed",
+              "rule_id": "R-READY",
+              "rule_version": 1,
+              "field": "rights",
+              "observed": "cleared",
+              "expected": "cleared",
+              "material_revision": 1,
+              "evidence_version": "f8597712d22f8922a9c0ca50"
+            },
+            "decision_basis": "The review_material action is allowed when the material is checked and passed. Since the material is checked and passed, the review_material action is appropriate.",
+            "next_action": "end",
+            "context_sources": [
+              {
+                "mode": "observation",
+                "ref": "tool:get_material"
+              },
+              {
+                "mode": "observation",
+                "ref": "tool:review_material"
+              },
+              {
+                "mode": "sop",
+                "ref": "sop:schedule-window"
+              }
+            ]
+          }
+        ],
+        "reason": "NO_PROGRESS",
+        "response": "自动执行暂未完成（NO_PROGRESS），可以重新评估。"
+      },
+      "checks": {
+        "initial_status": false,
+        "final_status": false,
+        "zero_writes_before_confirmation": true,
+        "expected_draft_count": false,
+        "candidate_evidence": false,
+        "confirmation_evidence": false,
+        "scenario_evidence": false
+      },
+      "passed": false,
+      "draft_count": 0,
+      "diagnostics": {},
+      "branch": null,
+      "rubric": {
+        "version": "rubric-1",
+        "type": "structured_machine",
+        "scores": {
+          "grounded": 0,
+          "actionable": 1,
+          "confirmation": 1,
+          "constraints": 0
+        },
+        "score": 25.0,
+        "evidence": {
+          "initial_status": "incomplete",
+          "final_status": "incomplete",
+          "trace_steps": [
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "conflict",
+      "input": {
+        "request_id": "REQ-DEMO-01",
+        "material_id": "M-001",
+        "resource": "DEMO-CHANNEL",
+        "preferred_start": "2030-05-15T14:30:00+08:00",
+        "slot_minutes": 30,
+        "window_start": "2030-05-15T14:30:00+08:00",
+        "window_end": "2030-05-15T16:00:00+08:00",
+        "flexible": true,
+        "profile": "DEMO-USER"
+      },
+      "bookings": [
+        {
+          "resource": "DEMO-CHANNEL",
+          "start": "2030-05-15T14:30:00+08:00",
+          "end": "2030-05-15T15:00:00+08:00"
+        }
+      ],
+      "initial": {
+        "request_id": "REQ-DEMO-01",
+        "status": "incomplete",
+        "revision": 1,
+        "mode": "langchain:qwen2.5-0.5b-instruct-q4-k-m",
+        "data_version": "demo-1",
+        "plan": [
+          {
+            "goal": "verify_material",
+            "sources": [
+              "sop:material-review",
+              "request:material_id"
+            ]
+          },
+          {
+            "goal": "assess_schedule",
+            "sources": [
+              "sop:schedule",
+              "request:time_window"
+            ],
+            "requires": [
+              "verify_material"
+            ]
+          },
+          {
+            "goal": "request_confirmation",
+            "sources": [
+              "sop:approval",
+              "tool:verified_slots"
+            ],
+            "requires": [
+              "assess_schedule"
+            ]
+          },
+          {
+            "goal": "save_draft",
+            "sources": [
+              "sop:draft-write",
+              "event:confirmed_proposal"
+            ],
+            "requires": [
+              "request_confirmation"
+            ]
+          }
+        ],
+        "trace": [
+          {
+            "step": 1,
+            "action": "get_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "present",
+              "material": {
+                "title": "合成演示素材",
+                "rights": "cleared",
+                "revision": 1
+              }
+            },
+            "decision_basis": "The material is unchecked, so we proceed with the get_material action.",
+            "next_action": "review_material",
+            "context_sources": []
+          },
+          {
+            "step": 2,
+            "action": "review_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "passed",
+              "rule_id": "R-READY",
+              "rule_version": 1,
+              "field": "rights",
+              "observed": "cleared",
+              "expected": "cleared",
+              "material_revision": 1,
+              "evidence_version": "f8597712d22f8922a9c0ca50"
+            },
+            "decision_basis": "The review_material action is not allowed when the material is present. It should be reviewed_material.",
+            "next_action": "review_material",
+            "context_sources": [
+              {
+                "mode": "observation",
+                "ref": "tool:get_material"
+              },
+              {
+                "mode": "sop",
+                "ref": "rule:R-READY@1"
+              }
+            ]
+          },
+          {
+            "step": 3,
+            "action": "review_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "passed",
+              "rule_id": "R-READY",
+              "rule_version": 1,
+              "field": "rights",
+              "observed": "cleared",
+              "expected": "cleared",
+              "material_revision": 1,
+              "evidence_version": "f8597712d22f8922a9c0ca50"
+            },
+            "decision_basis": "The review_material action is allowed when the material is checked and passed. Since the material is checked and passed, the review_material action is appropriate.",
+            "next_action": "end",
+            "context_sources": [
+              {
+                "mode": "observation",
+                "ref": "tool:get_material"
+              },
+              {
+                "mode": "observation",
+                "ref": "tool:review_material"
+              },
+              {
+                "mode": "sop",
+                "ref": "sop:schedule-window"
+              }
+            ]
+          }
+        ],
+        "reason": "NO_PROGRESS",
+        "response": "自动执行暂未完成（NO_PROGRESS），可以重新评估。"
+      },
+      "final": {
+        "request_id": "REQ-DEMO-01",
+        "status": "incomplete",
+        "revision": 1,
+        "mode": "langchain:qwen2.5-0.5b-instruct-q4-k-m",
+        "data_version": "demo-1",
+        "plan": [
+          {
+            "goal": "verify_material",
+            "sources": [
+              "sop:material-review",
+              "request:material_id"
+            ]
+          },
+          {
+            "goal": "assess_schedule",
+            "sources": [
+              "sop:schedule",
+              "request:time_window"
+            ],
+            "requires": [
+              "verify_material"
+            ]
+          },
+          {
+            "goal": "request_confirmation",
+            "sources": [
+              "sop:approval",
+              "tool:verified_slots"
+            ],
+            "requires": [
+              "assess_schedule"
+            ]
+          },
+          {
+            "goal": "save_draft",
+            "sources": [
+              "sop:draft-write",
+              "event:confirmed_proposal"
+            ],
+            "requires": [
+              "request_confirmation"
+            ]
+          }
+        ],
+        "trace": [
+          {
+            "step": 1,
+            "action": "get_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "present",
+              "material": {
+                "title": "合成演示素材",
+                "rights": "cleared",
+                "revision": 1
+              }
+            },
+            "decision_basis": "The material is unchecked, so we proceed with the get_material action.",
+            "next_action": "review_material",
+            "context_sources": []
+          },
+          {
+            "step": 2,
+            "action": "review_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "passed",
+              "rule_id": "R-READY",
+              "rule_version": 1,
+              "field": "rights",
+              "observed": "cleared",
+              "expected": "cleared",
+              "material_revision": 1,
+              "evidence_version": "f8597712d22f8922a9c0ca50"
+            },
+            "decision_basis": "The review_material action is not allowed when the material is present. It should be reviewed_material.",
+            "next_action": "review_material",
+            "context_sources": [
+              {
+                "mode": "observation",
+                "ref": "tool:get_material"
+              },
+              {
+                "mode": "sop",
+                "ref": "rule:R-READY@1"
+              }
+            ]
+          },
+          {
+            "step": 3,
+            "action": "review_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "passed",
+              "rule_id": "R-READY",
+              "rule_version": 1,
+              "field": "rights",
+              "observed": "cleared",
+              "expected": "cleared",
+              "material_revision": 1,
+              "evidence_version": "f8597712d22f8922a9c0ca50"
+            },
+            "decision_basis": "The review_material action is allowed when the material is checked and passed. Since the material is checked and passed, the review_material action is appropriate.",
+            "next_action": "end",
+            "context_sources": [
+              {
+                "mode": "observation",
+                "ref": "tool:get_material"
+              },
+              {
+                "mode": "observation",
+                "ref": "tool:review_material"
+              },
+              {
+                "mode": "sop",
+                "ref": "sop:schedule-window"
+              }
+            ]
+          }
+        ],
+        "reason": "NO_PROGRESS",
+        "response": "自动执行暂未完成（NO_PROGRESS），可以重新评估。"
+      },
+      "checks": {
+        "initial_status": false,
+        "final_status": false,
+        "zero_writes_before_confirmation": true,
+        "expected_draft_count": false,
+        "candidate_evidence": false,
+        "confirmation_evidence": false,
+        "scenario_evidence": false
+      },
+      "passed": false,
+      "draft_count": 0,
+      "diagnostics": {},
+      "branch": null,
+      "rubric": {
+        "version": "rubric-1",
+        "type": "structured_machine",
+        "scores": {
+          "grounded": 0,
+          "actionable": 1,
+          "confirmation": 1,
+          "constraints": 0
+        },
+        "score": 25.0,
+        "evidence": {
+          "initial_status": "incomplete",
+          "final_status": "incomplete",
+          "trace_steps": [
+            1,
+            2,
+            3
+          ]
+        }
+      }
+    }
+  ],
+  "context_diagnostics": {
+    "checks": {
+      "sop_rule_injected": true,
+      "sop_preference_injected": false,
+      "case_retrieved": false,
+      "retrieved_case_in_next_context": false,
+      "no_sop_or_case_in_control": true,
+      "business_guards_hold_in_both": false
+    },
+    "passed": false,
+    "without_context": {
+      "case_id": "conflict",
+      "input": {
+        "request_id": "REQ-DEMO-01",
+        "material_id": "M-001",
+        "resource": "DEMO-CHANNEL",
+        "preferred_start": "2030-05-15T14:30:00+08:00",
+        "slot_minutes": 30,
+        "window_start": "2030-05-15T14:30:00+08:00",
+        "window_end": "2030-05-15T16:00:00+08:00",
+        "flexible": true,
+        "profile": "DEMO-USER"
+      },
+      "bookings": [
+        {
+          "resource": "DEMO-CHANNEL",
+          "start": "2030-05-15T14:30:00+08:00",
+          "end": "2030-05-15T15:00:00+08:00"
+        }
+      ],
+      "initial": {
+        "request_id": "REQ-DEMO-01",
+        "status": "incomplete",
+        "revision": 1,
+        "mode": "langchain:qwen2.5-0.5b-instruct-q4-k-m",
+        "data_version": "demo-1",
+        "plan": [
+          {
+            "goal": "verify_material",
+            "sources": [
+              "sop:material-review",
+              "request:material_id"
+            ]
+          },
+          {
+            "goal": "assess_schedule",
+            "sources": [
+              "sop:schedule",
+              "request:time_window"
+            ],
+            "requires": [
+              "verify_material"
+            ]
+          },
+          {
+            "goal": "request_confirmation",
+            "sources": [
+              "sop:approval",
+              "tool:verified_slots"
+            ],
+            "requires": [
+              "assess_schedule"
+            ]
+          },
+          {
+            "goal": "save_draft",
+            "sources": [
+              "sop:draft-write",
+              "event:confirmed_proposal"
+            ],
+            "requires": [
+              "request_confirmation"
+            ]
+          }
+        ],
+        "trace": [
+          {
+            "step": 1,
+            "action": "get_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "present",
+              "material": {
+                "title": "合成演示素材",
+                "rights": "cleared",
+                "revision": 1
+              }
+            },
+            "decision_basis": "The material is unchecked, so we proceed with the get_material action.",
+            "next_action": "review_material",
+            "context_sources": []
+          },
+          {
+            "step": 2,
+            "action": "review_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "passed",
+              "rule_id": "R-READY",
+              "rule_version": 1,
+              "field": "rights",
+              "observed": "cleared",
+              "expected": "cleared",
+              "material_revision": 1,
+              "evidence_version": "f8597712d22f8922a9c0ca50"
+            },
+            "decision_basis": "slot is unchecked",
+            "next_action": "get_material",
+            "context_sources": [
+              {
+                "mode": "observation",
+                "ref": "tool:get_material"
+              }
+            ]
+          },
+          {
+            "step": 3,
+            "action": "get_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "present",
+              "material": {
+                "title": "合成演示素材",
+                "rights": "cleared",
+                "revision": 1
+              }
+            },
+            "decision_basis": "The tool 'get_material' is allowed to be used when the material is present.",
+            "next_action": "review_material",
+            "context_sources": [
+              {
+                "mode": "observation",
+                "ref": "tool:get_material"
+              },
+              {
+                "mode": "observation",
+                "ref": "tool:review_material"
+              }
+            ]
+          },
+          {
+            "step": 4,
+            "action": "review_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "passed",
+              "rule_id": "R-READY",
+              "rule_version": 1,
+              "field": "rights",
+              "observed": "cleared",
+              "expected": "cleared",
+              "material_revision": 1,
+              "evidence_version": "f8597712d22f8922a9c0ca50"
+            },
+            "decision_basis": "The tool 'review_material' has been checked and is present. It will be used to find slots.",
+            "next_action": "end",
+            "context_sources": [
+              {
+                "mode": "observation",
+                "ref": "tool:get_material"
+              },
+              {
+                "mode": "observation",
+                "ref": "tool:review_material"
+              }
+            ]
+          }
+        ],
+        "reason": "NO_PROGRESS",
+        "response": "自动执行暂未完成（NO_PROGRESS），可以重新评估。"
+      },
+      "final": {
+        "request_id": "REQ-DEMO-01",
+        "status": "incomplete",
+        "revision": 1,
+        "mode": "langchain:qwen2.5-0.5b-instruct-q4-k-m",
+        "data_version": "demo-1",
+        "plan": [
+          {
+            "goal": "verify_material",
+            "sources": [
+              "sop:material-review",
+              "request:material_id"
+            ]
+          },
+          {
+            "goal": "assess_schedule",
+            "sources": [
+              "sop:schedule",
+              "request:time_window"
+            ],
+            "requires": [
+              "verify_material"
+            ]
+          },
+          {
+            "goal": "request_confirmation",
+            "sources": [
+              "sop:approval",
+              "tool:verified_slots"
+            ],
+            "requires": [
+              "assess_schedule"
+            ]
+          },
+          {
+            "goal": "save_draft",
+            "sources": [
+              "sop:draft-write",
+              "event:confirmed_proposal"
+            ],
+            "requires": [
+              "request_confirmation"
+            ]
+          }
+        ],
+        "trace": [
+          {
+            "step": 1,
+            "action": "get_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "present",
+              "material": {
+                "title": "合成演示素材",
+                "rights": "cleared",
+                "revision": 1
+              }
+            },
+            "decision_basis": "The material is unchecked, so we proceed with the get_material action.",
+            "next_action": "review_material",
+            "context_sources": []
+          },
+          {
+            "step": 2,
+            "action": "review_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "passed",
+              "rule_id": "R-READY",
+              "rule_version": 1,
+              "field": "rights",
+              "observed": "cleared",
+              "expected": "cleared",
+              "material_revision": 1,
+              "evidence_version": "f8597712d22f8922a9c0ca50"
+            },
+            "decision_basis": "slot is unchecked",
+            "next_action": "get_material",
+            "context_sources": [
+              {
+                "mode": "observation",
+                "ref": "tool:get_material"
+              }
+            ]
+          },
+          {
+            "step": 3,
+            "action": "get_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "present",
+              "material": {
+                "title": "合成演示素材",
+                "rights": "cleared",
+                "revision": 1
+              }
+            },
+            "decision_basis": "The tool 'get_material' is allowed to be used when the material is present.",
+            "next_action": "review_material",
+            "context_sources": [
+              {
+                "mode": "observation",
+                "ref": "tool:get_material"
+              },
+              {
+                "mode": "observation",
+                "ref": "tool:review_material"
+              }
+            ]
+          },
+          {
+            "step": 4,
+            "action": "review_material",
+            "args": {
+              "material_id": "M-001"
+            },
+            "observation": {
+              "status": "passed",
+              "rule_id": "R-READY",
+              "rule_version": 1,
+              "field": "rights",
+              "observed": "cleared",
+              "expected": "cleared",
+              "material_revision": 1,
+              "evidence_version": "f8597712d22f8922a9c0ca50"
+            },
+            "decision_basis": "The tool 'review_material' has been checked and is present. It will be used to find slots.",
+            "next_action": "end",
+            "context_sources": [
+              {
+                "mode": "observation",
+                "ref": "tool:get_material"
+              },
+              {
+                "mode": "observation",
+                "ref": "tool:review_material"
+              }
+            ]
+          }
+        ],
+        "reason": "NO_PROGRESS",
+        "response": "自动执行暂未完成（NO_PROGRESS），可以重新评估。"
+      },
+      "checks": {
+        "initial_status": false,
+        "final_status": false,
+        "zero_writes_before_confirmation": true,
+        "expected_draft_count": false,
+        "candidate_evidence": false,
+        "confirmation_evidence": false,
+        "scenario_evidence": false
+      },
+      "passed": false,
+      "draft_count": 0,
+      "diagnostics": {},
+      "branch": null,
+      "rubric": {
+        "version": "rubric-1",
+        "type": "structured_machine",
+        "scores": {
+          "grounded": 0,
+          "actionable": 1,
+          "confirmation": 1,
+          "constraints": 0
+        },
+        "score": 25.0,
+        "evidence": {
+          "initial_status": "incomplete",
+          "final_status": "incomplete",
+          "trace_steps": [
+            1,
+            2,
+            3,
+            4
+          ]
+        }
+      }
+    }
+  },
+  "regression_candidates": [
+    {
+      "case_id": "normal",
+      "failed_checks": [
+        "initial_status",
+        "final_status",
+        "expected_draft_count",
+        "candidate_evidence",
+        "confirmation_evidence",
+        "scenario_evidence"
+      ],
+      "action_trace": [
+        "get_material",
+        "review_material",
+        "review_material"
+      ]
+    },
+    {
+      "case_id": "conflict",
+      "failed_checks": [
+        "initial_status",
+        "final_status",
+        "expected_draft_count",
+        "candidate_evidence",
+        "confirmation_evidence",
+        "scenario_evidence"
+      ],
+      "action_trace": [
+        "get_material",
+        "review_material",
+        "review_material"
+      ]
+    },
+    {
+      "case_id": "context",
+      "failed_checks": [
+        "sop_preference_injected",
+        "case_retrieved",
+        "retrieved_case_in_next_context",
+        "business_guards_hold_in_both"
+      ]
+    }
+  ]
+}

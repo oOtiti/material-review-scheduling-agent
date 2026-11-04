@@ -1,0 +1,24 @@
+{
+  "version": "demo-2",
+  "rule": {"id": "R-READY", "version": 1, "allowed_rights": "cleared"},
+  "materials": {
+    "M-001": {"title": "合成演示素材", "rights": "cleared", "revision": 1},
+    "M-BLOCKED": {"title": "合成受限素材", "rights": "restricted", "revision": 1},
+    "M-INCOMPLETE": {"title": "合成资料不足素材", "revision": 1}
+  },
+  "bookings": [],
+  "cases": [
+    {"id": "CASE-SLOT-04", "rule_version": 1, "topic": "occupied", "note": "无可用时段时说明阻塞原因。"},
+    {"id": "CASE-SLOT-03", "rule_version": 1, "topic": "occupied", "slot_minutes": 30,
+     "note": "备选应保留原请求的 30 分钟时长。"},
+    {"id": "CASE-SLOT-02", "rule_version": 1, "topic": "occupied", "resource": "DEMO-CHANNEL",
+     "note": "在同一资源内查询备选，不替换用户指定的资源。"},
+    {"id": "CASE-SLOT-01", "rule_version": 1, "topic": "occupied", "resource": "DEMO-CHANNEL", "slot_minutes": 30,
+     "note": "原时段占用时，在用户窗口内查询备选并等待确认。"},
+    {"id": "CASE-OLD", "rule_version": 0, "topic": "occupied", "resource": "DEMO-CHANNEL", "slot_minutes": 30,
+     "note": "旧版档期案例。"},
+    {"id": "CASE-RIGHTS", "rule_version": 1, "topic": "rights", "resource": "DEMO-CHANNEL", "slot_minutes": 30,
+     "note": "素材授权不齐时请求补充。"}
+  ],
+  "preferences": {"DEMO-USER": {"latest_first": false}}
+}

@@ -1,0 +1,2 @@
+# Optional for real model execution and the semantic Rubric judge.
+langchain-openai==1.7.3

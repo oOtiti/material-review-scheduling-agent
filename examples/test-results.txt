@@ -1,0 +1,32 @@
+test_benchmark_covers_the_core_paths_and_records_rubric (test_cli.CliTests.test_benchmark_covers_the_core_paths_and_records_rubric) ... ok
+test_benchmark_threshold_and_hard_gates_are_independent (test_cli.CliTests.test_benchmark_threshold_and_hard_gates_are_independent) ... ok
+test_chat_routes_text_before_database_or_model_setup (test_cli.CliTests.test_chat_routes_text_before_database_or_model_setup) ... ok
+test_model_adapter_routes_two_endpoint_configurations_and_exposes_usage (test_cli.CliTests.test_model_adapter_routes_two_endpoint_configurations_and_exposes_usage) ... ok
+test_remember_preference_cli_is_read_by_a_later_assessment (test_cli.CliTests.test_remember_preference_cli_is_read_by_a_later_assessment) ... ok
+test_semantic_judge_must_cite_an_existing_step (test_cli.CliTests.test_semantic_judge_must_cite_an_existing_step) ... ok
+test_start_and_confirm_across_cli_processes (test_cli.CliTests.test_start_and_confirm_across_cli_processes) ... ok
+test_a_new_booking_invalidates_the_old_confirmation (test_flow.WorkflowTests.test_a_new_booking_invalidates_the_old_confirmation) ... ok
+test_broken_schedule_tool_returns_incomplete_with_no_draft (test_flow.WorkflowTests.test_broken_schedule_tool_returns_incomplete_with_no_draft) ... ok
+test_concurrent_duplicate_confirmations_return_the_same_draft (test_flow.WorkflowTests.test_concurrent_duplicate_confirmations_return_the_same_draft) ... ok
+test_conflict_plan_runs_configured_recall_before_slot_search (test_flow.WorkflowTests.test_conflict_plan_runs_configured_recall_before_slot_search) ... ok
+test_explicit_preference_survives_reopen_and_does_not_unlock_schedule (test_flow.WorkflowTests.test_explicit_preference_survives_reopen_and_does_not_unlock_schedule) ... ok
+test_lost_save_response_can_be_reconciled (test_flow.WorkflowTests.test_lost_save_response_can_be_reconciled) ... ok
+test_missing_material_and_rule_rejection_have_different_outcomes (test_flow.WorkflowTests.test_missing_material_and_rule_rejection_have_different_outcomes) ... ok
+test_missing_window_asks_without_spending_model_calls (test_flow.WorkflowTests.test_missing_window_asks_without_spending_model_calls) ... ok
+test_model_cannot_approve_or_write (test_flow.WorkflowTests.test_model_cannot_approve_or_write) ... ok
+test_no_candidate_can_bypass_a_hard_window (test_flow.WorkflowTests.test_no_candidate_can_bypass_a_hard_window) ... ok
+test_no_progress_stops_before_a_third_identical_read (test_flow.WorkflowTests.test_no_progress_stops_before_a_third_identical_read) ... ok
+test_observation_changes_the_next_action (test_flow.WorkflowTests.test_observation_changes_the_next_action) ... ok
+test_occupied_slot_without_flexibility_asks_before_searching (test_flow.WorkflowTests.test_occupied_slot_without_flexibility_asks_before_searching) ... ok
+test_rejected_action_is_feedback_and_does_not_end_the_loop (test_flow.WorkflowTests.test_rejected_action_is_feedback_and_does_not_end_the_loop) ... ok
+test_retrieved_text_cannot_grant_save_authority (test_flow.WorkflowTests.test_retrieved_text_cannot_grant_save_authority) ... ok
+test_save_failure_rolls_back_and_can_be_retried (test_flow.WorkflowTests.test_save_failure_rolls_back_and_can_be_retried) ... ok
+test_search_finds_free_interval_starting_at_an_off_grid_booking_end (test_flow.WorkflowTests.test_search_finds_free_interval_starting_at_an_off_grid_booking_end) ... ok
+test_sop_injection_and_active_case_retrieval_are_traceable (test_flow.WorkflowTests.test_sop_injection_and_active_case_retrieval_are_traceable) ... ok
+test_unusable_schedule_at_confirmation_preserves_the_proposal (test_flow.WorkflowTests.test_unusable_schedule_at_confirmation_preserves_the_proposal) ... ok
+test_wrong_proposal_does_not_save (test_flow.WorkflowTests.test_wrong_proposal_does_not_save) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 2.529s
+
+OK

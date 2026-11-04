@@ -1,0 +1,22 @@
+{
+  "request": {
+    "request_id": "REQ-DEMO-01",
+    "material_id": "M-001",
+    "resource": "DEMO-CHANNEL",
+    "preferred_start": "2030-05-15T14:30:00+08:00",
+    "slot_minutes": 30,
+    "window_start": "2030-05-15T14:30:00+08:00",
+    "window_end": "2030-05-15T16:00:00+08:00",
+    "flexible": true,
+    "profile": "DEMO-USER"
+  },
+  "bookings": [
+    {
+      "resource": "DEMO-CHANNEL",
+      "start": "2030-05-15T14:30:00+08:00",
+      "end": "2030-05-15T15:00:00+08:00"
+    }
+  ],
+  "data_version": "demo-2",
+  "simulated_confirmation_choice": 1
+}

@@ -1,0 +1,867 @@
+{
+  "case_id": "clarify_flexibility",
+  "input": {
+    "request_id": "REQ-DEMO-01",
+    "material_id": "M-001",
+    "resource": "DEMO-CHANNEL",
+    "preferred_start": "2030-05-15T14:30:00+08:00",
+    "slot_minutes": 30,
+    "window_start": "2030-05-15T14:30:00+08:00",
+    "window_end": "2030-05-15T16:00:00+08:00",
+    "profile": "DEMO-USER"
+  },
+  "bookings": [
+    {
+      "resource": "DEMO-CHANNEL",
+      "start": "2030-05-15T14:30:00+08:00",
+      "end": "2030-05-15T15:00:00+08:00"
+    }
+  ],
+  "initial": {
+    "request_id": "REQ-DEMO-01",
+    "status": "needs_input",
+    "revision": 1,
+    "mode": "langchain:qwen2.5-0.5b-instruct-q4-k-m",
+    "data_version": "demo-2",
+    "plan_route": "clarify",
+    "replans": [
+      {
+        "from": "original_slot",
+        "to": "clarify",
+        "reason": "FLEXIBILITY_UNSPECIFIED",
+        "trigger": {
+          "step": 3,
+          "action": "query_slot",
+          "status": "occupied"
+        },
+        "remaining_goals": [
+          "ask_input"
+        ]
+      }
+    ],
+    "model_usage": {
+      "decision_calls": 4,
+      "reported_calls": 4,
+      "input_tokens": 1210,
+      "output_tokens": 61
+    },
+    "plan": [
+      {
+        "goal": "verify_material",
+        "sources": [
+          "sop:material-review",
+          "request:material_id"
+        ]
+      },
+      {
+        "goal": "assess_schedule",
+        "sources": [
+          "sop:schedule",
+          "request:time_window"
+        ],
+        "requires": [
+          "verify_material"
+        ]
+      },
+      {
+        "goal": "request_confirmation",
+        "sources": [
+          "sop:approval",
+          "tool:verified_slots"
+        ],
+        "requires": [
+          "assess_schedule"
+        ]
+      },
+      {
+        "goal": "save_draft",
+        "sources": [
+          "sop:draft-write",
+          "event:confirmed_proposal"
+        ],
+        "requires": [
+          "request_confirmation"
+        ]
+      }
+    ],
+    "trace": [
+      {
+        "step": 1,
+        "action": "get_material",
+        "args": {
+          "material_id": "M-001"
+        },
+        "observation": {
+          "status": "present",
+          "material": {
+            "title": "合成演示素材",
+            "rights": "cleared",
+            "revision": 1
+          }
+        },
+        "decision_basis": "slot=unchecked",
+        "next_action": "review_material",
+        "context_sources": [],
+        "plan_route": "original_slot"
+      },
+      {
+        "step": 2,
+        "action": "review_material",
+        "args": {
+          "material_id": "M-001"
+        },
+        "observation": {
+          "status": "passed",
+          "rule_id": "R-READY",
+          "rule_version": 1,
+          "field": "rights",
+          "observed": "cleared",
+          "expected": "cleared",
+          "material_revision": 1,
+          "evidence_version": "f8597712d22f8922a9c0ca50"
+        },
+        "decision_basis": "get_material",
+        "next_action": "query_slot",
+        "context_sources": [
+          {
+            "mode": "observation",
+            "ref": "tool:get_material"
+          },
+          {
+            "mode": "sop",
+            "ref": "rule:R-READY@1"
+          }
+        ],
+        "plan_route": "original_slot"
+      },
+      {
+        "step": 3,
+        "action": "query_slot",
+        "args": {
+          "resource": "DEMO-CHANNEL",
+          "start": "2030-05-15T14:30:00+08:00",
+          "end": "2030-05-15T15:00:00+08:00"
+        },
+        "observation": {
+          "status": "occupied",
+          "slot": {
+            "start": "2030-05-15T14:30:00+08:00",
+            "end": "2030-05-15T15:00:00+08:00"
+          }
+        },
+        "decision_basis": "get_material",
+        "next_action": "ask_input",
+        "context_sources": [
+          {
+            "mode": "observation",
+            "ref": "tool:get_material"
+          },
+          {
+            "mode": "observation",
+            "ref": "tool:review_material"
+          },
+          {
+            "mode": "sop",
+            "ref": "sop:schedule-window"
+          }
+        ],
+        "plan_route": "original_slot"
+      },
+      {
+        "step": 4,
+        "action": "ask_input",
+        "args": {
+          "request_id": "REQ-DEMO-01"
+        },
+        "observation": {
+          "status": "needs_input",
+          "reason": "FLEXIBILITY_UNSPECIFIED",
+          "candidate_count": 0
+        },
+        "decision_basis": "get_material",
+        "next_action": "end",
+        "context_sources": [
+          {
+            "mode": "observation",
+            "ref": "tool:get_material"
+          },
+          {
+            "mode": "observation",
+            "ref": "tool:review_material"
+          },
+          {
+            "mode": "observation",
+            "ref": "tool:query_slot"
+          },
+          {
+            "mode": "sop",
+            "ref": "sop:schedule-window"
+          }
+        ],
+        "plan_route": "clarify"
+      }
+    ],
+    "reason": "FLEXIBILITY_UNSPECIFIED",
+    "missing": [
+      "flexible"
+    ],
+    "response": "原时段已被占用。是否允许在你给定的窗口内改期？请用同一个 request_id 补充 flexible（true 或 false）。"
+  },
+  "final": {
+    "request_id": "REQ-DEMO-01",
+    "status": "needs_input",
+    "revision": 1,
+    "mode": "langchain:qwen2.5-0.5b-instruct-q4-k-m",
+    "data_version": "demo-2",
+    "plan_route": "clarify",
+    "replans": [
+      {
+        "from": "original_slot",
+        "to": "clarify",
+        "reason": "FLEXIBILITY_UNSPECIFIED",
+        "trigger": {
+          "step": 3,
+          "action": "query_slot",
+          "status": "occupied"
+        },
+        "remaining_goals": [
+          "ask_input"
+        ]
+      }
+    ],
+    "model_usage": {
+      "decision_calls": 4,
+      "reported_calls": 4,
+      "input_tokens": 1210,
+      "output_tokens": 61
+    },
+    "plan": [
+      {
+        "goal": "verify_material",
+        "sources": [
+          "sop:material-review",
+          "request:material_id"
+        ]
+      },
+      {
+        "goal": "assess_schedule",
+        "sources": [
+          "sop:schedule",
+          "request:time_window"
+        ],
+        "requires": [
+          "verify_material"
+        ]
+      },
+      {
+        "goal": "request_confirmation",
+        "sources": [
+          "sop:approval",
+          "tool:verified_slots"
+        ],
+        "requires": [
+          "assess_schedule"
+        ]
+      },
+      {
+        "goal": "save_draft",
+        "sources": [
+          "sop:draft-write",
+          "event:confirmed_proposal"
+        ],
+        "requires": [
+          "request_confirmation"
+        ]
+      }
+    ],
+    "trace": [
+      {
+        "step": 1,
+        "action": "get_material",
+        "args": {
+          "material_id": "M-001"
+        },
+        "observation": {
+          "status": "present",
+          "material": {
+            "title": "合成演示素材",
+            "rights": "cleared",
+            "revision": 1
+          }
+        },
+        "decision_basis": "slot=unchecked",
+        "next_action": "review_material",
+        "context_sources": [],
+        "plan_route": "original_slot"
+      },
+      {
+        "step": 2,
+        "action": "review_material",
+        "args": {
+          "material_id": "M-001"
+        },
+        "observation": {
+          "status": "passed",
+          "rule_id": "R-READY",
+          "rule_version": 1,
+          "field": "rights",
+          "observed": "cleared",
+          "expected": "cleared",
+          "material_revision": 1,
+          "evidence_version": "f8597712d22f8922a9c0ca50"
+        },
+        "decision_basis": "get_material",
+        "next_action": "query_slot",
+        "context_sources": [
+          {
+            "mode": "observation",
+            "ref": "tool:get_material"
+          },
+          {
+            "mode": "sop",
+            "ref": "rule:R-READY@1"
+          }
+        ],
+        "plan_route": "original_slot"
+      },
+      {
+        "step": 3,
+        "action": "query_slot",
+        "args": {
+          "resource": "DEMO-CHANNEL",
+          "start": "2030-05-15T14:30:00+08:00",
+          "end": "2030-05-15T15:00:00+08:00"
+        },
+        "observation": {
+          "status": "occupied",
+          "slot": {
+            "start": "2030-05-15T14:30:00+08:00",
+            "end": "2030-05-15T15:00:00+08:00"
+          }
+        },
+        "decision_basis": "get_material",
+        "next_action": "ask_input",
+        "context_sources": [
+          {
+            "mode": "observation",
+            "ref": "tool:get_material"
+          },
+          {
+            "mode": "observation",
+            "ref": "tool:review_material"
+          },
+          {
+            "mode": "sop",
+            "ref": "sop:schedule-window"
+          }
+        ],
+        "plan_route": "original_slot"
+      },
+      {
+        "step": 4,
+        "action": "ask_input",
+        "args": {
+          "request_id": "REQ-DEMO-01"
+        },
+        "observation": {
+          "status": "needs_input",
+          "reason": "FLEXIBILITY_UNSPECIFIED",
+          "candidate_count": 0
+        },
+        "decision_basis": "get_material",
+        "next_action": "end",
+        "context_sources": [
+          {
+            "mode": "observation",
+            "ref": "tool:get_material"
+          },
+          {
+            "mode": "observation",
+            "ref": "tool:review_material"
+          },
+          {
+            "mode": "observation",
+            "ref": "tool:query_slot"
+          },
+          {
+            "mode": "sop",
+            "ref": "sop:schedule-window"
+          }
+        ],
+        "plan_route": "clarify"
+      }
+    ],
+    "reason": "FLEXIBILITY_UNSPECIFIED",
+    "missing": [
+      "flexible"
+    ],
+    "response": "原时段已被占用。是否允许在你给定的窗口内改期？请用同一个 request_id 补充 flexible（true 或 false）。"
+  },
+  "checks": {
+    "initial_status": true,
+    "final_status": true,
+    "zero_writes_before_confirmation": true,
+    "expected_draft_count": true,
+    "candidate_evidence": true,
+    "confirmation_evidence": true,
+    "scenario_evidence": true,
+    "plan_replan_evidence": true,
+    "bounded_react_chain": true
+  },
+  "passed": true,
+  "draft_count": 0,
+  "diagnostics": {
+    "after_clarification": {
+      "request_id": "REQ-DEMO-01",
+      "status": "awaiting_confirmation",
+      "revision": 2,
+      "mode": "langchain:qwen2.5-0.5b-instruct-q4-k-m",
+      "data_version": "demo-2",
+      "plan_route": "alternative_slots",
+      "replans": [
+        {
+          "from": "original_slot",
+          "to": "alternative_slots",
+          "reason": "PREFERRED_SLOT_OCCUPIED",
+          "trigger": {
+            "step": 3,
+            "action": "query_slot",
+            "status": "occupied"
+          },
+          "remaining_goals": [
+            "recall_cases",
+            "find_slots",
+            "propose_alternatives",
+            "request_confirmation"
+          ]
+        }
+      ],
+      "model_usage": {
+        "decision_calls": 7,
+        "reported_calls": 7,
+        "input_tokens": 3082,
+        "output_tokens": 163
+      },
+      "plan": [
+        {
+          "goal": "verify_material",
+          "sources": [
+            "sop:material-review",
+            "request:material_id"
+          ]
+        },
+        {
+          "goal": "assess_schedule",
+          "sources": [
+            "sop:schedule",
+            "request:time_window"
+          ],
+          "requires": [
+            "verify_material"
+          ]
+        },
+        {
+          "goal": "request_confirmation",
+          "sources": [
+            "sop:approval",
+            "tool:verified_slots"
+          ],
+          "requires": [
+            "assess_schedule"
+          ]
+        },
+        {
+          "goal": "save_draft",
+          "sources": [
+            "sop:draft-write",
+            "event:confirmed_proposal"
+          ],
+          "requires": [
+            "request_confirmation"
+          ]
+        }
+      ],
+      "trace": [
+        {
+          "step": 1,
+          "action": "get_material",
+          "args": {
+            "material_id": "M-001"
+          },
+          "observation": {
+            "status": "present",
+            "material": {
+              "title": "合成演示素材",
+              "rights": "cleared",
+              "revision": 1
+            }
+          },
+          "decision_basis": "slot=unchecked",
+          "next_action": "review_material",
+          "context_sources": [],
+          "plan_route": "original_slot"
+        },
+        {
+          "step": 2,
+          "action": "review_material",
+          "args": {
+            "material_id": "M-001"
+          },
+          "observation": {
+            "status": "passed",
+            "rule_id": "R-READY",
+            "rule_version": 1,
+            "field": "rights",
+            "observed": "cleared",
+            "expected": "cleared",
+            "material_revision": 1,
+            "evidence_version": "f8597712d22f8922a9c0ca50"
+          },
+          "decision_basis": "slot=unchecked",
+          "next_action": "query_slot",
+          "context_sources": [
+            {
+              "mode": "observation",
+              "ref": "tool:get_material"
+            },
+            {
+              "mode": "sop",
+              "ref": "rule:R-READY@1"
+            }
+          ],
+          "plan_route": "original_slot"
+        },
+        {
+          "step": 3,
+          "action": "query_slot",
+          "args": {
+            "resource": "DEMO-CHANNEL",
+            "start": "2030-05-15T14:30:00+08:00",
+            "end": "2030-05-15T15:00:00+08:00"
+          },
+          "observation": {
+            "status": "occupied",
+            "slot": {
+              "start": "2030-05-15T14:30:00+08:00",
+              "end": "2030-05-15T15:00:00+08:00"
+            }
+          },
+          "decision_basis": "get_material",
+          "next_action": "propose_original",
+          "context_sources": [
+            {
+              "mode": "observation",
+              "ref": "tool:get_material"
+            },
+            {
+              "mode": "observation",
+              "ref": "tool:review_material"
+            },
+            {
+              "mode": "sop",
+              "ref": "sop:schedule-window"
+            }
+          ],
+          "plan_route": "original_slot"
+        },
+        {
+          "step": 4,
+          "action": "propose_original",
+          "args": {
+            "request_id": "REQ-DEMO-01"
+          },
+          "observation": {
+            "status": "rejected",
+            "reason": "UNVERIFIED_PROPOSAL",
+            "slot": "occupied"
+          },
+          "decision_basis": "The user wants to schedule a new task, so the original task should be proposed first.",
+          "next_action": "recall_cases",
+          "context_sources": [
+            {
+              "mode": "observation",
+              "ref": "tool:get_material"
+            },
+            {
+              "mode": "observation",
+              "ref": "tool:review_material"
+            },
+            {
+              "mode": "observation",
+              "ref": "tool:query_slot"
+            },
+            {
+              "mode": "sop",
+              "ref": "sop:schedule-window"
+            },
+            {
+              "mode": "sop",
+              "ref": "preference:DEMO-USER"
+            }
+          ],
+          "plan_route": "alternative_slots"
+        },
+        {
+          "step": 5,
+          "action": "recall_cases",
+          "args": {
+            "topic": "occupied",
+            "rule_version": 1,
+            "resource": "DEMO-CHANNEL",
+            "slot_minutes": 30,
+            "top_k": 3
+          },
+          "observation": {
+            "eligible_count": 4,
+            "cases": [
+              {
+                "id": "CASE-SLOT-01",
+                "note": "原时段占用时，在用户窗口内查询备选并等待确认。",
+                "rule_version": 1,
+                "matched_on": [
+                  "resource",
+                  "slot_minutes"
+                ],
+                "score": 3
+              },
+              {
+                "id": "CASE-SLOT-02",
+                "note": "在同一资源内查询备选，不替换用户指定的资源。",
+                "rule_version": 1,
+                "matched_on": [
+                  "resource"
+                ],
+                "score": 2
+              },
+              {
+                "id": "CASE-SLOT-03",
+                "note": "备选应保留原请求的 30 分钟时长。",
+                "rule_version": 1,
+                "matched_on": [
+                  "slot_minutes"
+                ],
+                "score": 1
+              }
+            ]
+          },
+          "decision_basis": "The user has already recalled cases, so no further actions are necessary.",
+          "next_action": "find_slots",
+          "context_sources": [
+            {
+              "mode": "observation",
+              "ref": "tool:get_material"
+            },
+            {
+              "mode": "observation",
+              "ref": "tool:review_material"
+            },
+            {
+              "mode": "observation",
+              "ref": "tool:query_slot"
+            },
+            {
+              "mode": "sop",
+              "ref": "sop:schedule-window"
+            },
+            {
+              "mode": "sop",
+              "ref": "preference:DEMO-USER"
+            },
+            {
+              "mode": "guard",
+              "ref": "rejected:propose_original"
+            }
+          ],
+          "plan_route": "alternative_slots"
+        },
+        {
+          "step": 6,
+          "action": "find_slots",
+          "args": {
+            "resource": "DEMO-CHANNEL",
+            "window_start": "2030-05-15T14:30:00+08:00",
+            "window_end": "2030-05-15T16:00:00+08:00",
+            "slot_minutes": 30,
+            "flexible": true
+          },
+          "observation": {
+            "status": "found",
+            "candidates": [
+              {
+                "start": "2030-05-15T15:00:00+08:00",
+                "end": "2030-05-15T15:30:00+08:00"
+              },
+              {
+                "start": "2030-05-15T15:30:00+08:00",
+                "end": "2030-05-15T16:00:00+08:00"
+              }
+            ],
+            "ranked_with_preference": true,
+            "preference_source": "fixture"
+          },
+          "decision_basis": "get_material, review_material, query_slot, recall_cases",
+          "next_action": "propose_alternatives",
+          "context_sources": [
+            {
+              "mode": "observation",
+              "ref": "tool:get_material"
+            },
+            {
+              "mode": "observation",
+              "ref": "tool:review_material"
+            },
+            {
+              "mode": "observation",
+              "ref": "tool:query_slot"
+            },
+            {
+              "mode": "observation",
+              "ref": "tool:recall_cases"
+            },
+            {
+              "mode": "sop",
+              "ref": "sop:schedule-window"
+            },
+            {
+              "mode": "sop",
+              "ref": "preference:DEMO-USER"
+            },
+            {
+              "mode": "retrieval",
+              "ref": "case:CASE-SLOT-01"
+            },
+            {
+              "mode": "retrieval",
+              "ref": "case:CASE-SLOT-02"
+            },
+            {
+              "mode": "retrieval",
+              "ref": "case:CASE-SLOT-03"
+            },
+            {
+              "mode": "guard",
+              "ref": "rejected:propose_original"
+            }
+          ],
+          "plan_route": "alternative_slots"
+        },
+        {
+          "step": 7,
+          "action": "propose_alternatives",
+          "args": {
+            "request_id": "REQ-DEMO-01"
+          },
+          "observation": {
+            "status": "awaiting_confirmation",
+            "reason": null,
+            "candidate_count": 2
+          },
+          "decision_basis": "在用户窗口内查询备选并等待确认。",
+          "next_action": "end",
+          "context_sources": [
+            {
+              "mode": "observation",
+              "ref": "tool:get_material"
+            },
+            {
+              "mode": "observation",
+              "ref": "tool:review_material"
+            },
+            {
+              "mode": "observation",
+              "ref": "tool:query_slot"
+            },
+            {
+              "mode": "observation",
+              "ref": "tool:recall_cases"
+            },
+            {
+              "mode": "observation",
+              "ref": "tool:find_slots"
+            },
+            {
+              "mode": "sop",
+              "ref": "sop:schedule-window"
+            },
+            {
+              "mode": "sop",
+              "ref": "preference:DEMO-USER"
+            },
+            {
+              "mode": "retrieval",
+              "ref": "case:CASE-SLOT-01"
+            },
+            {
+              "mode": "retrieval",
+              "ref": "case:CASE-SLOT-02"
+            },
+            {
+              "mode": "retrieval",
+              "ref": "case:CASE-SLOT-03"
+            },
+            {
+              "mode": "guard",
+              "ref": "rejected:propose_original"
+            }
+          ],
+          "plan_route": "alternative_slots"
+        }
+      ],
+      "proposal_id": "b5664e4a93d0e6934006fa40",
+      "review": {
+        "status": "passed",
+        "rule_id": "R-READY",
+        "rule_version": 1,
+        "field": "rights",
+        "observed": "cleared",
+        "expected": "cleared",
+        "material_revision": 1,
+        "evidence_version": "f8597712d22f8922a9c0ca50"
+      },
+      "requested_slot": {
+        "status": "occupied",
+        "slot": {
+          "start": "2030-05-15T14:30:00+08:00",
+          "end": "2030-05-15T15:00:00+08:00"
+        }
+      },
+      "candidates": [
+        {
+          "start": "2030-05-15T15:00:00+08:00",
+          "end": "2030-05-15T15:30:00+08:00",
+          "choice": 1
+        },
+        {
+          "start": "2030-05-15T15:30:00+08:00",
+          "end": "2030-05-15T16:00:00+08:00",
+          "choice": 2
+        }
+      ],
+      "response": "素材通过 R-READY@1 审核。原时段 2030-05-15T14:30:00+08:00 至 2030-05-15T15:00:00+08:00 已占用。允许窗口内可选 1（2030-05-15T15:00:00+08:00 至 2030-05-15T15:30:00+08:00）、2（2030-05-15T15:30:00+08:00 至 2030-05-15T16:00:00+08:00）。请确认提案 b5664e4a93d0e6934006fa40 的时段编号。"
+    }
+  },
+  "branch": null,
+  "first_branch_attempt": null,
+  "guard_rejections": 0,
+  "rubric": {
+    "version": "rubric-1",
+    "type": "structured_machine",
+    "scores": {
+      "grounded": 2,
+      "actionable": 2,
+      "confirmation": 2,
+      "constraints": 2
+    },
+    "score": 100.0,
+    "evidence": {
+      "initial_status": "needs_input",
+      "final_status": "needs_input",
+      "trace_steps": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  }
+}

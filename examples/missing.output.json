@@ -1,0 +1,277 @@
+{
+  "case_id": "missing",
+  "input": {
+    "request_id": "REQ-DEMO-01",
+    "material_id": "M-INCOMPLETE",
+    "resource": "DEMO-CHANNEL",
+    "preferred_start": "2030-05-15T14:30:00+08:00",
+    "slot_minutes": 30,
+    "window_start": "2030-05-15T14:30:00+08:00",
+    "window_end": "2030-05-15T16:00:00+08:00",
+    "flexible": true,
+    "profile": "DEMO-USER"
+  },
+  "bookings": [],
+  "initial": {
+    "request_id": "REQ-DEMO-01",
+    "status": "needs_input",
+    "revision": 1,
+    "mode": "offline_mock",
+    "data_version": "demo-2",
+    "plan_route": "clarify",
+    "replans": [
+      {
+        "from": "original_slot",
+        "to": "clarify",
+        "reason": "MATERIAL_FIELDS_MISSING",
+        "trigger": {
+          "step": 1,
+          "action": "get_material",
+          "status": "missing"
+        },
+        "remaining_goals": [
+          "ask_input"
+        ]
+      }
+    ],
+    "model_usage": {
+      "decision_calls": 2,
+      "reported_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    "plan": [
+      {
+        "goal": "verify_material",
+        "sources": [
+          "sop:material-review",
+          "request:material_id"
+        ]
+      },
+      {
+        "goal": "assess_schedule",
+        "sources": [
+          "sop:schedule",
+          "request:time_window"
+        ],
+        "requires": [
+          "verify_material"
+        ]
+      },
+      {
+        "goal": "request_confirmation",
+        "sources": [
+          "sop:approval",
+          "tool:verified_slots"
+        ],
+        "requires": [
+          "assess_schedule"
+        ]
+      },
+      {
+        "goal": "save_draft",
+        "sources": [
+          "sop:draft-write",
+          "event:confirmed_proposal"
+        ],
+        "requires": [
+          "request_confirmation"
+        ]
+      }
+    ],
+    "trace": [
+      {
+        "step": 1,
+        "action": "get_material",
+        "args": {
+          "material_id": "M-INCOMPLETE"
+        },
+        "observation": {
+          "status": "missing",
+          "missing": [
+            "rights"
+          ]
+        },
+        "decision_basis": "读取素材资料。",
+        "next_action": "ask_input",
+        "context_sources": [],
+        "plan_route": "original_slot"
+      },
+      {
+        "step": 2,
+        "action": "ask_input",
+        "args": {
+          "request_id": "REQ-DEMO-01"
+        },
+        "observation": {
+          "status": "needs_input",
+          "reason": "MISSING_MATERIAL_FIELDS",
+          "candidate_count": 0
+        },
+        "decision_basis": "当前素材资料不足，需要用户补充。",
+        "next_action": "end",
+        "context_sources": [
+          {
+            "mode": "observation",
+            "ref": "tool:get_material"
+          }
+        ],
+        "plan_route": "clarify"
+      }
+    ],
+    "reason": "MISSING_MATERIAL_FIELDS",
+    "missing": [
+      "rights"
+    ],
+    "response": "请补充 rights 后重新评估。"
+  },
+  "final": {
+    "request_id": "REQ-DEMO-01",
+    "status": "needs_input",
+    "revision": 1,
+    "mode": "offline_mock",
+    "data_version": "demo-2",
+    "plan_route": "clarify",
+    "replans": [
+      {
+        "from": "original_slot",
+        "to": "clarify",
+        "reason": "MATERIAL_FIELDS_MISSING",
+        "trigger": {
+          "step": 1,
+          "action": "get_material",
+          "status": "missing"
+        },
+        "remaining_goals": [
+          "ask_input"
+        ]
+      }
+    ],
+    "model_usage": {
+      "decision_calls": 2,
+      "reported_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    "plan": [
+      {
+        "goal": "verify_material",
+        "sources": [
+          "sop:material-review",
+          "request:material_id"
+        ]
+      },
+      {
+        "goal": "assess_schedule",
+        "sources": [
+          "sop:schedule",
+          "request:time_window"
+        ],
+        "requires": [
+          "verify_material"
+        ]
+      },
+      {
+        "goal": "request_confirmation",
+        "sources": [
+          "sop:approval",
+          "tool:verified_slots"
+        ],
+        "requires": [
+          "assess_schedule"
+        ]
+      },
+      {
+        "goal": "save_draft",
+        "sources": [
+          "sop:draft-write",
+          "event:confirmed_proposal"
+        ],
+        "requires": [
+          "request_confirmation"
+        ]
+      }
+    ],
+    "trace": [
+      {
+        "step": 1,
+        "action": "get_material",
+        "args": {
+          "material_id": "M-INCOMPLETE"
+        },
+        "observation": {
+          "status": "missing",
+          "missing": [
+            "rights"
+          ]
+        },
+        "decision_basis": "读取素材资料。",
+        "next_action": "ask_input",
+        "context_sources": [],
+        "plan_route": "original_slot"
+      },
+      {
+        "step": 2,
+        "action": "ask_input",
+        "args": {
+          "request_id": "REQ-DEMO-01"
+        },
+        "observation": {
+          "status": "needs_input",
+          "reason": "MISSING_MATERIAL_FIELDS",
+          "candidate_count": 0
+        },
+        "decision_basis": "当前素材资料不足，需要用户补充。",
+        "next_action": "end",
+        "context_sources": [
+          {
+            "mode": "observation",
+            "ref": "tool:get_material"
+          }
+        ],
+        "plan_route": "clarify"
+      }
+    ],
+    "reason": "MISSING_MATERIAL_FIELDS",
+    "missing": [
+      "rights"
+    ],
+    "response": "请补充 rights 后重新评估。"
+  },
+  "checks": {
+    "initial_status": true,
+    "final_status": true,
+    "zero_writes_before_confirmation": true,
+    "expected_draft_count": true,
+    "candidate_evidence": true,
+    "confirmation_evidence": true,
+    "scenario_evidence": true,
+    "plan_replan_evidence": true,
+    "bounded_react_chain": true
+  },
+  "passed": true,
+  "draft_count": 0,
+  "diagnostics": {},
+  "branch": null,
+  "first_branch_attempt": null,
+  "guard_rejections": 0,
+  "rubric": {
+    "version": "rubric-1",
+    "type": "structured_machine",
+    "scores": {
+      "grounded": 2,
+      "actionable": 2,
+      "confirmation": 2,
+      "constraints": 2
+    },
+    "score": 100.0,
+    "evidence": {
+      "initial_status": "needs_input",
+      "final_status": "needs_input",
+      "trace_steps": [
+        1,
+        2
+      ]
+    }
+  }
+}
