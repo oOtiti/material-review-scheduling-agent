@@ -7,13 +7,20 @@ Python 3.11 或更新版本。在仓库根目录运行下面的命令。离线�
 ```powershell
 python -m unittest discover -s tests -v
 python -m src.benchmark --mode offline
-$proposal = python -m src.main --db demo.db start examples/normal.input.json | ConvertFrom-Json
+$demoDb = "demo-$([guid]::NewGuid().ToString('N')).db"
+$proposal = python -m src.main --db $demoDb start examples/normal.input.json | ConvertFrom-Json
 $proposal.response
-python -m src.main --db demo.db confirm $proposal.request_id $proposal.proposal_id 1
-python -m src.main --db demo.db status $proposal.request_id
 ```
 
-`start` 返回提案和候选时段。检查候选后，将上例中的 `1` 换为你选定的编号。每次演示使用新的数据库文件名可重新走一遍确认流程。相同提案和编号的重复确认返回同一个草稿。
+`start` 返回提案和候选时段。此时还没有保存草稿。查看候选后，再运行下面的命令并输入你要确认的时段编号。
+
+```powershell
+$choice = Read-Host '输入要确认的时段编号'
+python -m src.main --db $demoDb confirm $proposal.request_id $proposal.proposal_id $choice
+python -m src.main --db $demoDb status $proposal.request_id
+```
+
+每次运行第一段命令都会使用一个新的演示数据库。相同提案和编号的重复确认返回同一个草稿。
 
 文本入口 `chat` 处理常见问候、能力询问、无关请求和排期意图澄清。它在启动模型和打开数据库前返回。排期参数通过 `start` 提交，确认通过 `confirm` 绑定当前提案和选项。
 
